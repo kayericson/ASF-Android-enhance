@@ -8,5 +8,5 @@ Install [ArchiSteamFarm](https://github.com/JustArchiNET/ArchiSteamFarm) in Andr
 
 Get [Termux](https://f-droid.org/ru/packages/com.termux/), open and enter the command:
 ```
-curl -L -O https://raw.githubusercontent.com/sevcator/ASF-Android/main/asf-android.sh && chmod +x asf-android.sh && bash asf-android.sh
+curl -L -O https://raw.githubusercontent.com/kayericson/ASF-Android/main/asf-android.sh && chmod +x asf-android.sh && bash asf-android.sh
 ```
