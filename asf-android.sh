@@ -132,3 +132,12 @@ else
   echo "Your architecture: $arch. Please report this on GitHub Issues."
   echo ""
 fi
+# Переходим в ASF директорию
+cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
+# Создаем папку plugins, если она не существует
+mkdir -p plugins
+# Загружаем ASFEnhance.zip и распаковываем его в plugins
+curl -L -o ASFEnhance.zip https://github.com/chr233/ASFEnhance/releases/download/2.3.10.0/ASFEnhance.zip
+unzip ASFEnhance.zip -d plugins
+# Удалим архив, если не нужен
+rm ASFEnhance.zip
