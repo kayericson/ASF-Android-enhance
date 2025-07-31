@@ -1,6 +1,4 @@
 # 🍃 ASF-Android
-> [!WARNING]
-> I am and Archi not responsible for the use of this program, the what happening of your Steam accounts. I can help for fix the errors and problems of this script.
 
 📄 Created by [Steam Guide](https://steamcommunity.com/sharedfiles/filedetails/?id=2570297945) 
 
