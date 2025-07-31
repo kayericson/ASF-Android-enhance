@@ -1,26 +1,26 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-# Download latest ASFEnhance.zip URL
+# Fetch the latest release JSON and extract ASFEnhance.zip URL
 URL=$(curl -s https://api.github.com/repos/chr233/ASFEnhance/releases/latest \
   | grep browser_download_url \
   | grep ASFEnhance.zip \
   | cut -d '"' -f 4)
 
-# Exit if URL not found
+# Exit if URL is empty
 if [ -z "$URL" ]; then
   echo "❌ Could not find ASFEnhance.zip URL"
   exit 1
 fi
 
-# Download the file
+# Download using curl
 echo "⬇️ Downloading ASFEnhance.zip..."
-wget -q --show-progress "$URL" -O ASFEnhance.zip
+curl -L "$URL" -o ASFEnhance.zip
 
-# Create plugin directory
+# Create plugin directory if needed
 echo "📁 Creating ./ASF/plugins directory..."
 mkdir -p ./ASF/plugins
 
-# Unzip to the right folder
+# Unzip using built-in unzip
 echo "📦 Unzipping into ./ASF/plugins..."
 unzip -o ASFEnhance.zip -d ./ASF/plugins
 
