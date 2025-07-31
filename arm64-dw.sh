@@ -1,4 +1,3 @@
-#hi
 curl -s https://api.github.com/repos/JustArchiNET/ArchiSteamFarm/releases/latest \
 | grep "browser_download_url.*linux-arm64.zip" \
 | cut -d : -f 2,3 \
