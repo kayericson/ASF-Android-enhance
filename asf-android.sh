@@ -131,12 +131,32 @@ else
   echo "Your architecture: $arch. Please report this on GitHub Issues."
   echo ""
 fi
-# Переходим в ASF директорию
-cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
-# Создаем папку plugins, если она не существует
+# Fetch the latest release JSON and extract ASFEnhance.zip URL
+URL=$(curl -s https://api.github.com/repos/chr233/ASFEnhance/releases/latest \
+  | grep browser_download_url \
+  | grep ASFEnhance.zip \
+  | cut -d '"' -f 4)
+
+# Exit if URL is empty
+if [ -z "$URL" ]; then
+  echo "❌ Could not find ASFEnhance.zip URL"
+  exit 1
+fi
+
+# Download using curl
+echo "⬇️ Downloading ASFEnhance.zip..."
+curl -L "$URL" -o ASFEnhance.zip
+
+# Create plugin directory if needed
+echo "📁 Creating ./ASF/plugins directory..."
 mkdir -p plugins
-# Загружаем ASFEnhance.zip и распаковываем его в plugins
-curl -L -o ASFEnhance.zip https://github.com/chr233/ASFEnhance/releases/download/2.3.10.0/ASFEnhance.zip
-unzip ASFEnhance.zip -d plugins
-# Удалим архив, если не нужен
+
+# Unzip using built-in unzip
+echo "📦 Unzipping into ./ASF/plugins..."
+unzip -o ASFEnhance.zip -d plugins
+
+# Optional cleanup
+echo "🧹 Cleaning up..."
 rm ASFEnhance.zip
+
+echo "✅ Done! ASFEnhance is installed in ./ASF/plugins"
