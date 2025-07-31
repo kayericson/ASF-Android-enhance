@@ -1,3 +1,4 @@
+# Information script
 clear
 echo "╭━━━┳━━━┳━━━╮╱╭━━━╮╱╱╱╱╭╮╱╱╱╱╱╱╱╭╮"
 echo "┃╭━╮┃╭━╮┃╭━━╯╱┃╭━╮┃╱╱╱╱┃┃╱╱╱╱╱╱╱┃┃"
@@ -5,7 +6,7 @@ echo "┃┃╱┃┃╰━━┫╰━━╮╱┃┃╱┃┣━╮╭━╯�
 echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
 echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
 echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
-echo "      github: kayericson/ASF-Android"
+echo "      github: sevcator/ASF-Android"
 echo ""
 echo "ArchiSteamFarm in Android Device"
 echo ""
@@ -51,14 +52,14 @@ mkdir /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubun
 cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
 mkdir /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/config
 cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/config
-curl -L -O https://github.com/kayericson/ASF-Android/raw/main/IPC.config
+curl -L -O https://github.com/sevcator/ASF-Android/raw/main/IPC.config
 cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
 
 # Downloading ArchiSteamFarm
 arch=$(dpkg --print-architecture)
 
 if [ "$arch" = "arm" ]; then
-  curl -L https://raw.githubusercontent.com/kayericson/ASF-Android/main/arm-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
+  curl -L https://raw.githubusercontent.com/sevcator/ASF-Android/main/arm-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
   bash /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
   unzip /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/ASF-linux-arm.zip
   clear
@@ -68,14 +69,14 @@ if [ "$arch" = "arm" ]; then
   echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
   echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
   echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
-  echo "      github: kayericson/ASF-Android"
+  echo "      github: sevcator/ASF-Android"
   echo ""
   echo "ArchiSteamFarm in Android Device"
   echo ""
   echo "All right!"
   echo ""
 elif [ "$arch" = "armhf" ]; then
-  curl -L https://raw.githubusercontent.com/kayericson/ASF-Android/main/arm-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
+  curl -L https://raw.githubusercontent.com/sevcator/ASF-Android/main/arm-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
   bash /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
   unzip /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/ASF-linux-arm.zip
   clear
@@ -85,14 +86,14 @@ elif [ "$arch" = "armhf" ]; then
   echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
   echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
   echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
-  echo "      github: kayericson/ASF-Android"
+  echo "      github: sevcator/ASF-Android"
   echo ""
   echo "ArchiSteamFarm in Android Device"
   echo ""
   echo "All right!"
   echo ""
 elif [ "$arch" = "arm64" ]; then
-  curl -L https://raw.githubusercontent.com/kayericson/ASF-Android/main/arm64-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
+  curl -L https://raw.githubusercontent.com/sevcator/ASF-Android/main/arm64-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
   bash /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
   unzip /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/ASF-linux-arm64.zip
   clear
@@ -102,14 +103,14 @@ elif [ "$arch" = "arm64" ]; then
   echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
   echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
   echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
-  echo "      github: kayericson/ASF-Android"
+  echo "      github: sevcator/ASF-Android"
   echo ""
   echo "ArchiSteamFarm in Android Device"
   echo ""
   echo "All right!"
   echo ""
 elif [ "$arch" = "aarch64" ]; then
-  curl -L https://raw.githubusercontent.com/kayericson/ASF-Android/main/arm64-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
+  curl -L https://raw.githubusercontent.com/sevcator/ASF-Android/main/arm64-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
   bash /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
   unzip /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/ASF-linux-arm64.zip
   clear
@@ -119,7 +120,7 @@ elif [ "$arch" = "aarch64" ]; then
   echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
   echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
   echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
-  echo "      github: kayericson/ASF-Android"
+  echo "      github: sevcator/ASF-Android"
   echo ""
   echo "ArchiSteamFarm in Android Device"
   echo ""
@@ -131,6 +132,8 @@ else
   echo "Your architecture: $arch. Please report this on GitHub Issues."
   echo ""
 fi
+
+cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
 # Fetch the latest release JSON and extract ASFEnhance.zip URL
 URL=$(curl -s https://api.github.com/repos/chr233/ASFEnhance/releases/latest \
   | grep browser_download_url \
@@ -147,10 +150,6 @@ fi
 echo "⬇️ Downloading ASFEnhance.zip..."
 curl -L "$URL" -o ASFEnhance.zip
 
-# Create plugin directory if needed
-echo "📁 Creating ./ASF/plugins directory..."
-mkdir -p plugins
-
 # Unzip using built-in unzip
 echo "📦 Unzipping into ./ASF/plugins..."
 unzip -o ASFEnhance.zip -d plugins
@@ -159,4 +158,4 @@ unzip -o ASFEnhance.zip -d plugins
 echo "🧹 Cleaning up..."
 rm ASFEnhance.zip
 
-echo "✅ Done! ASFEnhance is installed in ./ASF/plugins"
+echo "✅ Done! ASFEnhance is installed in ./asf/plugins"
