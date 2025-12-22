@@ -159,3 +159,45 @@ echo "🧹 Cleaning up..."
 rm ASFEnhance.zip
 
 echo "✅ Done! ASFEnhance is installed in ./asf/plugins"
+###############################################################################
+# Move to ASF directory and download / unzip config.zip provided by user
+###############################################################################
+
+echo
+echo "=== Final configuration setup ==="
+echo "Changing directory to ASF installation folder..."
+cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf || {
+    echo "Error: Failed to change to ASF directory."
+    exit 1
+}
+
+# Ask user for config.zip link until it is provided
+echo
+while true; do
+    echo "Please enter the direct download link for your config.zip file:"
+    read -rp "Config ZIP URL: " config_link
+
+    if [ -z "$config_link" ]; then
+        echo "Link cannot be empty. Please try again."
+        echo
+        continue
+    fi
+
+    echo "Downloading config.zip..."
+    curl -L -O "$config_link"
+
+    # Check if download was successful
+    if [ -f "config.zip" ]; then
+        break
+    else
+        echo "Download failed. Please check the link and try again."
+        echo
+    fi
+done
+
+echo "Unzipping config.zip..."
+unzip -o config.zip
+
+echo
+echo "Configuration files have been extracted."
+echo "Everything is ready! ASF is fully set up."
