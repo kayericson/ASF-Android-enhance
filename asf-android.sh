@@ -161,6 +161,7 @@ rm ASFEnhance.zip
 echo "✅ Done! ASFEnhance is installed in ./asf/plugins"
 ###############################################################################
 # Move to ASF directory and download / unzip config.zip provided by user
+# User can type "skip" to bypass config download and extraction
 ###############################################################################
 
 echo
@@ -171,14 +172,23 @@ cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/
     exit 1
 }
 
-# Ask user for config.zip link until it is provided
 echo
-while true; do
-    echo "Please enter the direct download link for your config.zip file:"
-    read -rp "Config ZIP URL: " config_link
+echo "You can provide a direct download link to your config.zip file."
+echo "If you want to skip this step, type: skip"
+echo
 
+while true; do
+    read -rp "Config ZIP URL (or 'skip'): " config_link
+
+    # Skip configuration step
+    if [ "$config_link" = "skip" ]; then
+        echo "Skipping config download and extraction."
+        break
+    fi
+
+    # Empty input check
     if [ -z "$config_link" ]; then
-        echo "Link cannot be empty. Please try again."
+        echo "Input cannot be empty. Please enter a valid link or type 'skip'."
         echo
         continue
     fi
@@ -188,16 +198,15 @@ while true; do
 
     # Check if download was successful
     if [ -f "config.zip" ]; then
+        echo "Unzipping config.zip..."
+        unzip -o config.zip
         break
     else
-        echo "Download failed. Please check the link and try again."
+        echo "Download failed. Please check the link and try again, or type 'skip'."
         echo
     fi
 done
 
-echo "Unzipping config.zip..."
-unzip -o config.zip
-
 echo
-echo "Configuration files have been extracted."
-echo "Everything is ready! ASF is fully set up."
+echo "Everything is ready!"
+echo "ASF installation is complete."
