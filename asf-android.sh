@@ -131,7 +131,8 @@ while true; do
         set -e
         cd /home/noroot/asf
         curl -fL "$1" -o config.zip
-        unzip -o config.zip
+        # -j ignores folders inside the zip, so files always land in ./config
+        unzip -j -o config.zip -d config
         rm config.zip
         chown -R noroot:noroot /home/noroot/asf
     ' _ "$config_link"; then
