@@ -23,7 +23,7 @@ fi
 pkg update -y -o Dpkg::Options::="--force-confnew"
 
 # Installing packages
-pkg install proot-distro -y
+pkg install proot-distro unzip -y
 
 # Installing Ubuntu
 proot-distro install ubuntu
@@ -44,121 +44,68 @@ echo 'fi' >> /data/data/com.termux/files/usr/etc/bash.bashrc
 echo "Welcome to Termux!" > /data/data/com.termux/files/usr/etc/motd
 echo " " >> /data/data/com.termux/files/usr/etc/motd
 
-# Joining into directory Ubuntu
-cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot
+# ASF folder inside Ubuntu rootfs
+ASF_DIR=/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
 
 # Creating a folder for ASF and IPC config
-mkdir /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
-cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
-mkdir /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/config
-cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/config
-curl -L -O https://github.com/sevcator/ASF-Android/raw/main/IPC.config
-cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
+mkdir -p "$ASF_DIR/config"
+curl -fL https://github.com/sevcator/ASF-Android/raw/main/IPC.config -o "$ASF_DIR/config/IPC.config"
 
 # Downloading ArchiSteamFarm
+# Direct "latest/download" links are used instead of the GitHub API (API has a 60 req/hour limit per IP)
 arch=$(dpkg --print-architecture)
 
-if [ "$arch" = "arm" ]; then
-  curl -L https://raw.githubusercontent.com/sevcator/ASF-Android/main/arm-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
-  bash /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
-  unzip /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/ASF-linux-arm.zip
-  clear
-  echo "╭━━━┳━━━┳━━━╮╱╭━━━╮╱╱╱╱╭╮╱╱╱╱╱╱╱╭╮"
-  echo "┃╭━╮┃╭━╮┃╭━━╯╱┃╭━╮┃╱╱╱╱┃┃╱╱╱╱╱╱╱┃┃"
-  echo "┃┃╱┃┃╰━━┫╰━━╮╱┃┃╱┃┣━╮╭━╯┣━┳━━┳┳━╯┃"
-  echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
-  echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
-  echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
-  echo "      github: sevcator/ASF-Android"
-  echo ""
-  echo "ArchiSteamFarm in Android Device"
-  echo ""
-  echo "All right!"
-  echo ""
-elif [ "$arch" = "armhf" ]; then
-  curl -L https://raw.githubusercontent.com/sevcator/ASF-Android/main/arm-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
-  bash /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm-dw.sh
-  unzip /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/ASF-linux-arm.zip
-  clear
-  echo "╭━━━┳━━━┳━━━╮╱╭━━━╮╱╱╱╱╭╮╱╱╱╱╱╱╱╭╮"
-  echo "┃╭━╮┃╭━╮┃╭━━╯╱┃╭━╮┃╱╱╱╱┃┃╱╱╱╱╱╱╱┃┃"
-  echo "┃┃╱┃┃╰━━┫╰━━╮╱┃┃╱┃┣━╮╭━╯┣━┳━━┳┳━╯┃"
-  echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
-  echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
-  echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
-  echo "      github: sevcator/ASF-Android"
-  echo ""
-  echo "ArchiSteamFarm in Android Device"
-  echo ""
-  echo "All right!"
-  echo ""
-elif [ "$arch" = "arm64" ]; then
-  curl -L https://raw.githubusercontent.com/sevcator/ASF-Android/main/arm64-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
-  bash /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
-  unzip /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/ASF-linux-arm64.zip
-  clear
-  echo "╭━━━┳━━━┳━━━╮╱╭━━━╮╱╱╱╱╭╮╱╱╱╱╱╱╱╭╮"
-  echo "┃╭━╮┃╭━╮┃╭━━╯╱┃╭━╮┃╱╱╱╱┃┃╱╱╱╱╱╱╱┃┃"
-  echo "┃┃╱┃┃╰━━┫╰━━╮╱┃┃╱┃┣━╮╭━╯┣━┳━━┳┳━╯┃"
-  echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
-  echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
-  echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
-  echo "      github: sevcator/ASF-Android"
-  echo ""
-  echo "ArchiSteamFarm in Android Device"
-  echo ""
-  echo "All right!"
-  echo ""
-elif [ "$arch" = "aarch64" ]; then
-  curl -L https://raw.githubusercontent.com/sevcator/ASF-Android/main/arm64-dw.sh -o /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
-  bash /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/arm64-dw.sh
-  unzip /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf/ASF-linux-arm64.zip
-  clear
-  echo "╭━━━┳━━━┳━━━╮╱╭━━━╮╱╱╱╱╭╮╱╱╱╱╱╱╱╭╮"
-  echo "┃╭━╮┃╭━╮┃╭━━╯╱┃╭━╮┃╱╱╱╱┃┃╱╱╱╱╱╱╱┃┃"
-  echo "┃┃╱┃┃╰━━┫╰━━╮╱┃┃╱┃┣━╮╭━╯┣━┳━━┳┳━╯┃"
-  echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
-  echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
-  echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
-  echo "      github: sevcator/ASF-Android"
-  echo ""
-  echo "ArchiSteamFarm in Android Device"
-  echo ""
-  echo "All right!"
-  echo ""
-else
-  clear
-  echo "Unknown architecture. Please install ArchiSteamFarm manually."
-  echo "Your architecture: $arch. Please report this on GitHub Issues."
-  echo ""
+case "$arch" in
+  arm|armhf)     ASF_ZIP="ASF-linux-arm.zip" ;;
+  arm64|aarch64) ASF_ZIP="ASF-linux-arm64.zip" ;;
+  *)
+    clear
+    echo "Unknown architecture. Please install ArchiSteamFarm manually."
+    echo "Your architecture: $arch. Please report this on GitHub Issues."
+    echo ""
+    exit 1
+    ;;
+esac
+
+echo "⬇️ Downloading $ASF_ZIP..."
+if ! curl -fL "https://github.com/JustArchiNET/ArchiSteamFarm/releases/latest/download/$ASF_ZIP" -o "$ASF_DIR/$ASF_ZIP"; then
+  echo "❌ Failed to download $ASF_ZIP"
+  exit 1
 fi
+unzip -o "$ASF_DIR/$ASF_ZIP" -d "$ASF_DIR"
+rm "$ASF_DIR/$ASF_ZIP"
 
-cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
-# Fetch the latest release JSON and extract ASFEnhance.zip URL
-URL=$(curl -s https://api.github.com/repos/chr233/ASFEnhance/releases/latest \
-  | grep browser_download_url \
-  | grep ASFEnhance.zip \
-  | cut -d '"' -f 4)
+clear
+echo "╭━━━┳━━━┳━━━╮╱╭━━━╮╱╱╱╱╭╮╱╱╱╱╱╱╱╭╮"
+echo "┃╭━╮┃╭━╮┃╭━━╯╱┃╭━╮┃╱╱╱╱┃┃╱╱╱╱╱╱╱┃┃"
+echo "┃┃╱┃┃╰━━┫╰━━╮╱┃┃╱┃┣━╮╭━╯┣━┳━━┳┳━╯┃"
+echo "┃╰━╯┣━━╮┃╭━┳┻━┫╰━╯┃╭╮┫╭╮┃╭┫╭╮┣┫╭╮┃"
+echo "┃╭━╮┃╰━╯┃┃╱╰━━┫╭━╮┃┃┃┃╰╯┃┃┃╰╯┃┃╰╯┃"
+echo "╰╯╱╰┻━━━┻╯╱╱╱╱╰╯╱╰┻╯╰┻━━┻╯╰━━┻┻━━╯"
+echo "      github: sevcator/ASF-Android"
+echo ""
+echo "ArchiSteamFarm in Android Device"
+echo ""
+echo "All right!"
+echo ""
 
-# Exit if URL is empty
-if [ -z "$URL" ]; then
-  echo "❌ Could not find ASFEnhance.zip URL"
+cd "$ASF_DIR"
+
+# Downloading ASFEnhance plugin
+echo "⬇️ Downloading ASFEnhance.zip..."
+if ! curl -fL "https://github.com/chr233/ASFEnhance/releases/latest/download/ASFEnhance.zip" -o ASFEnhance.zip; then
+  echo "❌ Failed to download ASFEnhance.zip"
   exit 1
 fi
 
-# Download using curl
-echo "⬇️ Downloading ASFEnhance.zip..."
-curl -L "$URL" -o ASFEnhance.zip
+echo "📦 Unzipping into ./plugins/ASFEnhance..."
+mkdir -p plugins/ASFEnhance
+unzip -o ASFEnhance.zip -d plugins/ASFEnhance
 
-# Unzip using built-in unzip
-echo "📦 Unzipping into ./ASF/plugins..."
-unzip -o ASFEnhance.zip -d plugins
-
-# Optional cleanup
 echo "🧹 Cleaning up..."
 rm ASFEnhance.zip
 
-echo "✅ Done! ASFEnhance is installed in ./asf/plugins"
+echo "✅ Done! ASFEnhance is installed in ./asf/plugins/ASFEnhance"
 ###############################################################################
 # Move to ASF directory and download / unzip config.zip provided by user
 # User can type "skip" to bypass config download and extraction
@@ -167,7 +114,7 @@ echo "✅ Done! ASFEnhance is installed in ./asf/plugins"
 echo
 echo "=== Final configuration setup ==="
 echo "Changing directory to ASF installation folder..."
-cd /data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf || {
+cd "$ASF_DIR" || {
     echo "Error: Failed to change to ASF directory."
     exit 1
 }
@@ -194,14 +141,14 @@ while true; do
     fi
 
     echo "Downloading config.zip..."
-    curl -L -O "$config_link"
-
-    # Check if download was successful
-    if [ -f "config.zip" ]; then
+    # Always save as config.zip, whatever the file name in the link is
+    if curl -fL "$config_link" -o config.zip; then
         echo "Unzipping config.zip..."
         unzip -o config.zip
+        rm config.zip
         break
     else
+        rm -f config.zip
         echo "Download failed. Please check the link and try again, or type 'skip'."
         echo
     fi
