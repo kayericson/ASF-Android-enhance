@@ -29,7 +29,7 @@ pkg install proot-distro unzip -y
 proot-distro install ubuntu
 
 # Installing requirements for ArchiSteamFarm
-proot-distro login ubuntu -- bash -c 'apt update -y && apt upgrade -y && apt install libicu-dev mono-runtime -y'
+proot-distro login ubuntu -- bash -c 'apt update -y && apt upgrade -y && apt install libicu-dev mono-runtime unzip curl -y'
 
 # Create a user noroot
 proot-distro login ubuntu -- bash -c 'useradd -m noroot'
@@ -44,15 +44,12 @@ echo 'fi' >> /data/data/com.termux/files/usr/etc/bash.bashrc
 echo "Welcome to Termux!" > /data/data/com.termux/files/usr/etc/motd
 echo " " >> /data/data/com.termux/files/usr/etc/motd
 
-# ASF folder inside Ubuntu rootfs
-ASF_DIR=/data/data/com.termux/files/usr/var/lib/proot-distro/installed-rootfs/ubuntu/home/noroot/asf
+# Run a command inside Ubuntu (paths are resolved by proot-distro itself, not hardcoded)
+ubuntu_run() {
+  proot-distro login ubuntu -- bash -c "$@"
+}
 
-# Creating a folder for ASF and IPC config
-mkdir -p "$ASF_DIR/config"
-curl -fL https://github.com/sevcator/ASF-Android/raw/main/IPC.config -o "$ASF_DIR/config/IPC.config"
-
-# Downloading ArchiSteamFarm
-# Direct "latest/download" links are used instead of the GitHub API (API has a 60 req/hour limit per IP)
+# Detect architecture
 arch=$(dpkg --print-architecture)
 
 case "$arch" in
@@ -67,13 +64,24 @@ case "$arch" in
     ;;
 esac
 
-echo "⬇️ Downloading $ASF_ZIP..."
-if ! curl -fL "https://github.com/JustArchiNET/ArchiSteamFarm/releases/latest/download/$ASF_ZIP" -o "$ASF_DIR/$ASF_ZIP"; then
-  echo "❌ Failed to download $ASF_ZIP"
+# Download ASF, IPC config and ASFEnhance inside Ubuntu
+echo "⬇️ Downloading ArchiSteamFarm and ASFEnhance..."
+if ! ubuntu_run '
+  set -e
+  mkdir -p /home/noroot/asf/config /home/noroot/asf/plugins/ASFEnhance
+  cd /home/noroot/asf
+  curl -fL "https://github.com/JustArchiNET/ArchiSteamFarm/releases/latest/download/$1" -o asf.zip
+  unzip -o asf.zip
+  rm asf.zip
+  curl -fL https://github.com/sevcator/ASF-Android/raw/main/IPC.config -o config/IPC.config
+  curl -fL https://github.com/chr233/ASFEnhance/releases/latest/download/ASFEnhance.zip -o ASFEnhance.zip
+  unzip -o ASFEnhance.zip -d plugins/ASFEnhance
+  rm ASFEnhance.zip
+  chown -R noroot:noroot /home/noroot/asf
+' _ "$ASF_ZIP"; then
+  echo "❌ Failed to download or unzip ASF / ASFEnhance"
   exit 1
 fi
-unzip -o "$ASF_DIR/$ASF_ZIP" -d "$ASF_DIR"
-rm "$ASF_DIR/$ASF_ZIP"
 
 clear
 echo "╭━━━┳━━━┳━━━╮╱╭━━━╮╱╱╱╱╭╮╱╱╱╱╱╱╱╭╮"
@@ -89,23 +97,6 @@ echo ""
 echo "All right!"
 echo ""
 
-cd "$ASF_DIR"
-
-# Downloading ASFEnhance plugin
-echo "⬇️ Downloading ASFEnhance.zip..."
-if ! curl -fL "https://github.com/chr233/ASFEnhance/releases/latest/download/ASFEnhance.zip" -o ASFEnhance.zip; then
-  echo "❌ Failed to download ASFEnhance.zip"
-  exit 1
-fi
-
-echo "📦 Unzipping into ./plugins/ASFEnhance..."
-mkdir -p plugins/ASFEnhance
-unzip -o ASFEnhance.zip -d plugins/ASFEnhance
-
-echo "🧹 Cleaning up..."
-rm ASFEnhance.zip
-
-echo "✅ Done! ASFEnhance is installed in ./asf/plugins/ASFEnhance"
 ###############################################################################
 # Move to ASF directory and download / unzip config.zip provided by user
 # User can type "skip" to bypass config download and extraction
@@ -113,12 +104,6 @@ echo "✅ Done! ASFEnhance is installed in ./asf/plugins/ASFEnhance"
 
 echo
 echo "=== Final configuration setup ==="
-echo "Changing directory to ASF installation folder..."
-cd "$ASF_DIR" || {
-    echo "Error: Failed to change to ASF directory."
-    exit 1
-}
-
 echo
 echo "You can provide a direct download link to your config.zip file."
 echo "If you want to skip this step, type: skip"
@@ -141,14 +126,18 @@ while true; do
     fi
 
     echo "Downloading config.zip..."
-    # Always save as config.zip, whatever the file name in the link is
-    if curl -fL "$config_link" -o config.zip; then
-        echo "Unzipping config.zip..."
+    # Download and unzip inside Ubuntu, always saved as config.zip
+    if ubuntu_run '
+        set -e
+        cd /home/noroot/asf
+        curl -fL "$1" -o config.zip
         unzip -o config.zip
         rm config.zip
+        chown -R noroot:noroot /home/noroot/asf
+    ' _ "$config_link"; then
         break
     else
-        rm -f config.zip
+        ubuntu_run 'rm -f /home/noroot/asf/config.zip'
         echo "Download failed. Please check the link and try again, or type 'skip'."
         echo
     fi
